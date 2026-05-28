@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)file:///Users/kanaevgeniy/Downloads/index_1.html -->
+<html lang="ru"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Каталог тендерных компаний — выручка 200 млн – 2 млрд ₽</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f5f5f3; color: #1a1a1a; padding: 24px; font-size: 14px; }
+h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.subtitle { font-size: 13px; color: #666; margin-bottom: 8px; }
+.note { font-size: 11px; color: #999; background: #fff; border: 1px solid #e0e0de; border-radius: 6px; padding: 8px 12px; margin-bottom: 20px; display: inline-block; }
+.search-bar { display: flex; gap: 8px; margin-bottom: 20px; }
+.search-bar input { flex: 1; padding: 8px 12px; border: 1px solid #d0d0ce; border-radius: 8px; font-size: 13px; outline: none; }
+.search-bar input:focus { border-color: #3266ad; }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.filter-btn { padding: 5px 12px; border: 1px solid #d0d0ce; border-radius: 20px; background: #fff; font-size: 12px; cursor: pointer; color: #555; transition: all 0.15s; }
+.filter-btn.active, .filter-btn:hover { background: #3266ad; color: #fff; border-color: #3266ad; }
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
+.stat { background: #fff; border-radius: 8px; padding: 12px 14px; border: 1px solid #e8e8e6; }
+.stat-val { font-size: 20px; font-weight: 700; }
+.stat-lbl { font-size: 11px; color: #888; margin-top: 2px; }
+.segment-block { margin-bottom: 24px; }
+.seg-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid #e8e8e6; }
+.seg-icon { font-size: 20px; }
+.seg-title { font-size: 16px; font-weight: 700; }
+.seg-count { font-size: 11px; background: #f0efea; color: #666; padding: 2px 8px; border-radius: 10px; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.card { background: #fff; border-radius: 10px; border: 1px solid #e8e8e6; padding: 14px 16px; transition: box-shadow 0.15s; }
+.card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.company-name { font-size: 13px; font-weight: 700; color: #1a1a1a; line-height: 1.3; }
+.revenue-badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-left: 8px; }
+.rev-low { background: #eaf3de; color: #3B6D11; }
+.rev-mid { background: #E6F1FB; color: #185FA5; }
+.rev-high { background: #FAEEDA; color: #854F0B; }
+.company-type { font-size: 11px; color: #888; margin-bottom: 6px; }
+.card-desc { font-size: 12px; color: #555; line-height: 1.5; margin-bottom: 8px; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; border: 1px solid #e0e0de; color: #666; }
+.card-footer { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #aaa; border-top: 1px solid #f0efe8; padding-top: 8px; margin-top: 4px; }
+.city { display: flex; align-items: center; gap: 3px; }
+.inn { font-family: monospace; font-size: 10px; color: #bbb; }
+.hidden { display: none !important; }
+.no-results { text-align: center; padding: 40px; color: #999; font-size: 14px; display: none; }
+@media (max-width: 900px) { .cards { grid-template-columns: repeat(2,1fr); } .stats { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<h1>🏢 Каталог тендерных компаний</h1>
+<p class="subtitle">Активные поставщики по 44-ФЗ и 223-ФЗ · Выручка 200 млн – 2 млрд ₽</p>
+<p class="note">⚠️ Данные — оценка на основе открытых источников (СПАРК, ФНС, ЕИС). Для точных цифр используйте СПАРК или Контур.Фокус.</p>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="🔍  Поиск по названию, описанию или городу..." oninput="filterAll()">
+</div>
+
+<div class="filter-row" id="filterRow"><button class="filter-btn active" data-seg="all">Все сегменты</button><button class="filter-btn" data-seg="🏥 Медицинские изделия">🏥 Медицинские изделия</button><button class="filter-btn" data-seg="🏗️ Строительные материалы">🏗️ Строительные материалы</button><button class="filter-btn" data-seg="🚗 Авто и запчасти">🚗 Авто и запчасти</button><button class="filter-btn" data-seg="💻 IT и телекоммуникации">💻 IT и телекоммуникации</button><button class="filter-btn" data-seg="⚡ Энергетика и ЖКХ">⚡ Энергетика и ЖКХ</button><button class="filter-btn" data-seg="🍽️ Продукты питания">🍽️ Продукты питания</button><button class="filter-btn" data-seg="🌿 Сельское хозяйство">🌿 Сельское хозяйство</button><button class="filter-btn" data-seg="🎓 Образование">🎓 Образование</button><button class="filter-btn" data-seg="👔 Одежда, обувь и СИЗ">👔 Одежда, обувь и СИЗ</button><button class="filter-btn" data-seg="🏢 Офис и хозтовары">🏢 Офис и хозтовары</button><button class="filter-btn" data-seg="🚛 Логистика и транспорт">🚛 Логистика и транспорт</button><button class="filter-btn" data-seg="🌳 Экология и благоустройство">🌳 Экология и благоустройство</button><button class="filter-btn" data-seg="🛡️ Безопасность">🛡️ Безопасность</button><button class="filter-btn" data-seg="📢 Реклама и полиграфия">📢 Реклама и полиграфия</button><button class="filter-btn" data-seg="🔬 Промышленность и оборудование">🔬 Промышленность и оборудование</button><button class="filter-btn" data-seg="💊 Фармацевтика и лекарства">💊 Фармацевтика и лекарства</button></div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-val" id="totalCompanies">47</div><div class="stat-lbl">Компаний в каталоге</div></div>
+  <div class="stat"><div class="stat-val">16</div><div class="stat-lbl">Сегментов рынка</div></div>
+  <div class="stat"><div class="stat-val">200М – 2 млрд</div><div class="stat-lbl">Диапазон выручки</div></div>
+  <div class="stat"><div class="stat-val">44-ФЗ / 223-ФЗ</div><div class="stat-lbl">Закупочные законы</div></div>
+</div>
+
+<div id="catalog"><div class="segment-block" data-seg="🏥 Медицинские изделия"><div class="seg-header"><span class="seg-title">🏥 Медицинские изделия</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Биосфера»</div>
+          <span class="revenue-badge rev-high">~1.4 млрд</span>
+        </div>
+        <div class="company-type">Производитель / Поставщик</div>
+        <div class="card-desc">Производство расходных медизделий: перчатки, маски, салфетки, пелёнки. Активный победитель тендеров больниц и ДСО по всей РФ.</div>
+        <div class="tags"><span class="tag">расходники</span><span class="tag">44-ФЗ</span><span class="tag">производство</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">ИНН 7721614680</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «МедТрейдГрупп»</div>
+          <span class="revenue-badge rev-mid">~600 млн</span>
+        </div>
+        <div class="company-type">Дистрибьютор</div>
+        <div class="card-desc">Поставки медоборудования и расходных материалов в государственные и частные ЛПУ. Работает по 44-ФЗ и 223-ФЗ.</div>
+        <div class="tags"><span class="tag">мед.оборудование</span><span class="tag">223-ФЗ</span><span class="tag">регионы</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Казань</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Медполимер»</div>
+          <span class="revenue-badge rev-low">~380 млн</span>
+        </div>
+        <div class="company-type">Производитель</div>
+        <div class="card-desc">Производство шприцев, катетеров, систем для инфузий. Занимает устойчивую нишу в государственных тендерах на расходники.</div>
+        <div class="tags"><span class="tag">расходники</span><span class="tag">производство</span><span class="tag">импортозамещение</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="🏗️ Строительные материалы"><div class="seg-header"><span class="seg-title">🏗️ Строительные материалы</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «СтройМастер-ДВ»</div>
+          <span class="revenue-badge rev-mid">~900 млн</span>
+        </div>
+        <div class="company-type">Поставщик / Подрядчик</div>
+        <div class="card-desc">Поставки строительных материалов и выполнение СМР для госзаказчиков ДФО. Специализация — капремонт, дорожное строительство.</div>
+        <div class="tags"><span class="tag">СМР</span><span class="tag">44-ФЗ</span><span class="tag">стройматериалы</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Хабаровск</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Промстройснаб»</div>
+          <span class="revenue-badge rev-mid">~700 млн</span>
+        </div>
+        <div class="company-type">Торговый дом</div>
+        <div class="card-desc">Оптовые поставки цемента, кирпича, арматуры, металлопроката для строительных тендеров ФСИН, МО, госкомпаний.</div>
+        <div class="tags"><span class="tag">цемент</span><span class="tag">арматура</span><span class="tag">223-ФЗ</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Екатеринбург</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «КровМонтаж»</div>
+          <span class="revenue-badge rev-low">~350 млн</span>
+        </div>
+        <div class="company-type">Производитель / Подрядчик</div>
+        <div class="card-desc">Кровельные и отделочные материалы, монтаж. Поставки для Минстроя, муниципальных заказчиков. Преимущество — субъект МСП.</div>
+        <div class="tags"><span class="tag">кровля</span><span class="tag">МСП</span><span class="tag">отделка</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Новосибирск</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="🚗 Авто и запчасти"><div class="seg-header"><span class="seg-title">🚗 Авто и запчасти</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Автодеталь-Сервис»</div>
+          <span class="revenue-badge rev-high">~1.8 млрд</span>
+        </div>
+        <div class="company-type">Дистрибьютор</div>
+        <div class="card-desc">Официальный дистрибьютор запчастей АвтоВАЗ и иностранных производителей. Крупный поставщик по тендерам для госпарков, МВД, МО.</div>
+        <div class="tags"><span class="tag">запчасти</span><span class="tag">ВАЗ</span><span class="tag">госпарки</span><span class="tag">44-ФЗ</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Тольятти</span>
+          <span class="inn">ИНН 6321100070</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «АвтоТрейд-Ойл»</div>
+          <span class="revenue-badge rev-mid">~500 млн</span>
+        </div>
+        <div class="company-type">Поставщик</div>
+        <div class="card-desc">Поставки ГСМ, масел, топлива и автохимии по тендерам для муниципальных транспортных предприятий, автобусных парков.</div>
+        <div class="tags"><span class="tag">ГСМ</span><span class="tag">топливо</span><span class="tag">транспорт</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Санкт-Петербург</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «АвтоМашТехника»</div>
+          <span class="revenue-badge rev-low">~350 млн</span>
+        </div>
+        <div class="company-type">Поставщик / Сервис</div>
+        <div class="card-desc">Запчасти для грузовой и специализированной техники (КАМАЗ, МАЗ), ТО и ремонт. Поставщик ФСИН, Росгвардии, дорожных служб.</div>
+        <div class="tags"><span class="tag">КАМАЗ</span><span class="tag">спецтехника</span><span class="tag">ТО</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Нижний Новгород</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="💻 IT и телекоммуникации"><div class="seg-header"><span class="seg-title">💻 IT и телекоммуникации</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «БАРС Груп»</div>
+          <span class="revenue-badge rev-high">~1.9 млрд</span>
+        </div>
+        <div class="company-type">Разработчик ПО</div>
+        <div class="card-desc">Разработка и внедрение информационных систем для госсектора: образование, здравоохранение, социальная защита. Крупный победитель гостендеров.</div>
+        <div class="tags"><span class="tag">ПО</span><span class="tag">госсектор</span><span class="tag">интеграция</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Казань</span>
+          <span class="inn">ИНН 1655056932</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">АО «НПО Эшелон»</div>
+          <span class="revenue-badge rev-mid">~800 млн</span>
+        </div>
+        <div class="company-type">Разработчик / Интегратор</div>
+        <div class="card-desc">Кибербезопасность, сертифицированные средства защиты информации для госорганов и КИИ. Аккредитован ФСБ, ФСТЭК.</div>
+        <div class="tags"><span class="tag">кибербезопасность</span><span class="tag">КИИ</span><span class="tag">ФСБ</span><span class="tag">ФСТЭК</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">ИНН 7714783146</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Группа Астра»</div>
+          <span class="revenue-badge rev-high">~1.2 млрд</span>
+        </div>
+        <div class="company-type">Разработчик ОС</div>
+        <div class="card-desc">Разработчик российской ОС Astra Linux. Активный победитель тендеров на импортозамещение ПО в органах власти и госкомпаниях.</div>
+        <div class="tags"><span class="tag">Astra Linux</span><span class="tag">импортозамещение</span><span class="tag">ОС</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">ИНН 7731601509</span>
+        </div></div></div></div><div class="segment-block" data-seg="⚡ Энергетика и ЖКХ"><div class="seg-header"><span class="seg-title">⚡ Энергетика и ЖКХ</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «ЭнергоТехКомплект»</div>
+          <span class="revenue-badge rev-high">~1.1 млрд</span>
+        </div>
+        <div class="company-type">Поставщик</div>
+        <div class="card-desc">Поставки кабельно-проводниковой продукции, трансформаторов, распределительных устройств для тендеров сетевых компаний.</div>
+        <div class="tags"><span class="tag">кабель</span><span class="tag">трансформаторы</span><span class="tag">РУ</span><span class="tag">223-ФЗ</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Свет-Сервис»</div>
+          <span class="revenue-badge rev-low">~450 млн</span>
+        </div>
+        <div class="company-type">Поставщик / Подрядчик</div>
+        <div class="card-desc">Поставка и монтаж светодиодных светильников уличного освещения. Устойчивая позиция в муниципальных тендерах на модернизацию освещения.</div>
+        <div class="tags"><span class="tag">LED</span><span class="tag">освещение</span><span class="tag">энергосервис</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Санкт-Петербург</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «АкваТехПром»</div>
+          <span class="revenue-badge rev-mid">~600 млн</span>
+        </div>
+        <div class="company-type">Поставщик / Подрядчик</div>
+        <div class="card-desc">Оборудование для водоподготовки, водоснабжения и водоотведения. Ключевой поставщик для ГУП ВКХ регионов ЦФО и ПФО.</div>
+        <div class="tags"><span class="tag">ВКХ</span><span class="tag">водоснабжение</span><span class="tag">ЖКХ</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Ярославль</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="🍽️ Продукты питания"><div class="seg-header"><span class="seg-title">🍽️ Продукты питания</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Ромкор»</div>
+          <span class="revenue-badge rev-high">~1.9 млрд</span>
+        </div>
+        <div class="company-type">Производитель</div>
+        <div class="card-desc">Мясоперерабатывающее предприятие, поставщик продуктов питания для школ, больниц, армии, ФСИН. Победитель крупных региональных тендеров.</div>
+        <div class="tags"><span class="tag">мясо</span><span class="tag">школы</span><span class="tag">44-ФЗ</span><span class="tag">ФСИН</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Челябинск</span>
+          <span class="inn">ИНН 7448070950</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Хладопродукт»</div>
+          <span class="revenue-badge rev-mid">~500 млн</span>
+        </div>
+        <div class="company-type">Производитель / Поставщик</div>
+        <div class="card-desc">Замороженные и охлаждённые продукты для госпитального питания, детских учреждений, армейских столовых. Аккредитован МО РФ.</div>
+        <div class="tags"><span class="tag">замороженные продукты</span><span class="tag">армия</span><span class="tag">больницы</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Краснодар</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Агропрод»</div>
+          <span class="revenue-badge rev-low">~350 млн</span>
+        </div>
+        <div class="company-type">Дистрибьютор</div>
+        <div class="card-desc">Комплексное продовольственное снабжение для государственных учреждений: крупы, консервы, масло, сахар. МСП-участник.</div>
+        <div class="tags"><span class="tag">продовольствие</span><span class="tag">МСП</span><span class="tag">комплект</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Воронеж</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="🌿 Сельское хозяйство"><div class="seg-header"><span class="seg-title">🌿 Сельское хозяйство</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «АгроТехСнаб»</div>
+          <span class="revenue-badge rev-mid">~750 млн</span>
+        </div>
+        <div class="company-type">Дистрибьютор с/х техники</div>
+        <div class="card-desc">Поставки сельхозтехники и запчастей (тракторы, плуги, сеялки) для региональных АПК-программ и тендеров Минсельхоза.</div>
+        <div class="tags"><span class="tag">сельхозтехника</span><span class="tag">МСХ</span><span class="tag">запчасти</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Краснодар</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Агрохимпромторг»</div>
+          <span class="revenue-badge rev-mid">~500 млн</span>
+        </div>
+        <div class="company-type">Поставщик</div>
+        <div class="card-desc">Удобрения, средства защиты растений, агрохимия. Поставки для госпрограмм субсидирования АПК, тендеры региональных министерств.</div>
+        <div class="tags"><span class="tag">удобрения</span><span class="tag">СЗСР</span><span class="tag">АПК</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «ВетФарм»</div>
+          <span class="revenue-badge rev-low">~280 млн</span>
+        </div>
+        <div class="company-type">Дистрибьютор</div>
+        <div class="card-desc">Ветеринарные препараты и вакцины. Активный поставщик для региональных ветеринарных служб по 44-ФЗ и для с/х предприятий.</div>
+        <div class="tags"><span class="tag">ветпрепараты</span><span class="tag">вакцины</span><span class="tag">ветслужбы</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Ростов-на-Дону</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="🎓 Образование"><div class="seg-header"><span class="seg-title">🎓 Образование</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Просвещение-Регион»</div>
+          <span class="revenue-badge rev-high">~1.2 млрд</span>
+        </div>
+        <div class="company-type">Издательство / Поставщик</div>
+        <div class="card-desc">Поставки учебников, методических пособий и цифровых образовательных ресурсов для школ и вузов. Дочерняя структура ИГ «Просвещение».</div>
+        <div class="tags"><span class="tag">учебники</span><span class="tag">школы</span><span class="tag">ЦОР</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Лабораторные Технологии»</div>
+          <span class="revenue-badge rev-low">~400 млн</span>
+        </div>
+        <div class="company-type">Поставщик</div>
+        <div class="card-desc">Оснащение учебных лабораторий, физических и химических кабинетов. Выигрывает тендеры на оборудование по нацпроекту «Образование».</div>
+        <div class="tags"><span class="tag">лабоборудование</span><span class="tag">нацпроект</span><span class="tag">физика</span><span class="tag">химия</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Казань</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «ШколаПарк»</div>
+          <span class="revenue-badge rev-low">~250 млн</span>
+        </div>
+        <div class="company-type">Производитель</div>
+        <div class="card-desc">Производство школьной мебели и игровых площадок. Поставляет в новые школы и детские сады по программам Минпросвещения.</div>
+        <div class="tags"><span class="tag">мебель</span><span class="tag">детплощадки</span><span class="tag">МСП</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Уфа</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="👔 Одежда, обувь и СИЗ"><div class="seg-header"><span class="seg-title">👔 Одежда, обувь и СИЗ</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Восток-Сервис-Спецкомплект»</div>
+          <span class="revenue-badge rev-high">~1.7 млрд</span>
+        </div>
+        <div class="company-type">Производитель</div>
+        <div class="card-desc">Один из лидеров рынка СИЗ и спецодежды. Крупнейший тендерный поставщик для промышленных предприятий, силовых структур и МЧС.</div>
+        <div class="tags"><span class="tag">СИЗ</span><span class="tag">спецодежда</span><span class="tag">МЧС</span><span class="tag">силовые</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">ИНН 7728543814</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Техноавиа»</div>
+          <span class="revenue-badge rev-mid">~600 млн</span>
+        </div>
+        <div class="company-type">Производитель / Поставщик</div>
+        <div class="card-desc">Производство СИЗ, рабочей обуви, перчаток. Широкая сеть по РФ. Активно участвует в тендерах предприятий с госучастием.</div>
+        <div class="tags"><span class="tag">обувь</span><span class="tag">перчатки</span><span class="tag">СИЗ</span><span class="tag">223-ФЗ</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">ИНН 7703057218</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">АО «Чайковский текстиль»</div>
+          <span class="revenue-badge rev-low">~400 млн</span>
+        </div>
+        <div class="company-type">Производитель</div>
+        <div class="card-desc">Производство тканей, постельного белья, спецтекстиля. Поставщик для больниц, армии, ФСИН. Работает с 1955 года.</div>
+        <div class="tags"><span class="tag">текстиль</span><span class="tag">постельное</span><span class="tag">армия</span><span class="tag">ФСИН</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Чайковский</span>
+          <span class="inn">ИНН 5920007960</span>
+        </div></div></div></div><div class="segment-block" data-seg="🏢 Офис и хозтовары"><div class="seg-header"><span class="seg-title">🏢 Офис и хозтовары</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Офис Премиум»</div>
+          <span class="revenue-badge rev-low">~350 млн</span>
+        </div>
+        <div class="company-type">Дистрибьютор</div>
+        <div class="card-desc">Комплексные поставки канцтоваров, бумаги, картриджей и оргтехники для органов государственной власти и бюджетных учреждений.</div>
+        <div class="tags"><span class="tag">канцтовары</span><span class="tag">бумага</span><span class="tag">картриджи</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «ХозСнаб Центр»</div>
+          <span class="revenue-badge rev-low">~280 млн</span>
+        </div>
+        <div class="company-type">Дистрибьютор</div>
+        <div class="card-desc">Хозяйственный инвентарь, моющие средства, инструменты. Поставки для ЖКХ-предприятий, школ, больниц. Активная работа в регионах.</div>
+        <div class="tags"><span class="tag">хозтовары</span><span class="tag">ЖКХ</span><span class="tag">расходники</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Тверь</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Клинпром»</div>
+          <span class="revenue-badge rev-low">~220 млн</span>
+        </div>
+        <div class="company-type">Производитель</div>
+        <div class="card-desc">Производство профессиональной химии для клининга. Поставщик для госучреждений, аутсорсинга уборки. Сертифицировано по ГОСТ.</div>
+        <div class="tags"><span class="tag">клининг</span><span class="tag">химия</span><span class="tag">ГОСТ</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Санкт-Петербург</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="🚛 Логистика и транспорт"><div class="seg-header"><span class="seg-title">🚛 Логистика и транспорт</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Байкал-Сервис ТК»</div>
+          <span class="revenue-badge rev-high">~1.8 млрд</span>
+        </div>
+        <div class="company-type">Транспортная компания</div>
+        <div class="card-desc">Грузоперевозки по всей России. Работает с государственными заказчиками по 223-ФЗ, обеспечивает доставку по контрактам госкорпораций.</div>
+        <div class="tags"><span class="tag">грузоперевозки</span><span class="tag">223-ФЗ</span><span class="tag">федеральный</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">ИНН 7710508619</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Деловые Линии-Регион»</div>
+          <span class="revenue-badge rev-mid">~700 млн</span>
+        </div>
+        <div class="company-type">Транспортная компания</div>
+        <div class="card-desc">Региональный сегмент перевозок ДЛ. Поставки последней мили для госконтрактов, тендеры на доставку в отдалённые районы.</div>
+        <div class="tags"><span class="tag">доставка</span><span class="tag">регионы</span><span class="tag">последняя миля</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Казань</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «АвиаТрансГрупп»</div>
+          <span class="revenue-badge rev-low">~400 млн</span>
+        </div>
+        <div class="company-type">Авиаброкер / Перевозчик</div>
+        <div class="card-desc">Авиационные грузоперевозки и чартерные рейсы для госзаказчиков. Поставки в труднодоступные районы Арктики и Сибири.</div>
+        <div class="tags"><span class="tag">авиаперевозки</span><span class="tag">Арктика</span><span class="tag">чартер</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="🌳 Экология и благоустройство"><div class="seg-header"><span class="seg-title">🌳 Экология и благоустройство</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «ЭкоСити»</div>
+          <span class="revenue-badge rev-mid">~900 млн</span>
+        </div>
+        <div class="company-type">Региональный оператор ТКО</div>
+        <div class="card-desc">Региональный оператор по обращению с ТКО. Вывоз и утилизация твёрдых коммунальных отходов по концессионным соглашениям.</div>
+        <div class="tags"><span class="tag">ТКО</span><span class="tag">регоператор</span><span class="tag">утилизация</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Самара</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «ГринЛэнд»</div>
+          <span class="revenue-badge rev-low">~300 млн</span>
+        </div>
+        <div class="company-type">Подрядчик</div>
+        <div class="card-desc">Озеленение, благоустройство территорий, уход за зелёными насаждениями. Победитель муниципальных тендеров в ЦФО и ПФО.</div>
+        <div class="tags"><span class="tag">озеленение</span><span class="tag">благоустройство</span><span class="tag">МСП</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Нижний Новгород</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «ЭкоАналитика»</div>
+          <span class="revenue-badge rev-low">~230 млн</span>
+        </div>
+        <div class="company-type">Лаборатория</div>
+        <div class="card-desc">Экологический мониторинг, лабораторные исследования почвы и воды. Аккредитована Росаккредитацией, работает с промышленными госзаказчиками.</div>
+        <div class="tags"><span class="tag">мониторинг</span><span class="tag">лаборатория</span><span class="tag">почва</span><span class="tag">вода</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Казань</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="🛡️ Безопасность"><div class="seg-header"><span class="seg-title">🛡️ Безопасность</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО ЧОО «Кобра»</div>
+          <span class="revenue-badge rev-mid">~600 млн</span>
+        </div>
+        <div class="company-type">ЧОО</div>
+        <div class="card-desc">Охранные услуги для госучреждений: школы, больницы, суды, органы власти. Крупный победитель тендеров в Москве и ЦФО по 44-ФЗ.</div>
+        <div class="tags"><span class="tag">охрана</span><span class="tag">44-ФЗ</span><span class="tag">ЧОО</span><span class="tag">госучреждения</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «ТелевизионныеСистемыБезопасности»</div>
+          <span class="revenue-badge rev-low">~450 млн</span>
+        </div>
+        <div class="company-type">Интегратор систем безопасности</div>
+        <div class="card-desc">Монтаж и обслуживание систем видеонаблюдения, СКУД, тревожной сигнализации. Госконтракты по программе «Безопасный город».</div>
+        <div class="tags"><span class="tag">СКУД</span><span class="tag">видеонаблюдение</span><span class="tag">Безопасный город</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «СтатусГрупп»</div>
+          <span class="revenue-badge rev-low">~280 млн</span>
+        </div>
+        <div class="company-type">ЧОО / Охрана периметра</div>
+        <div class="card-desc">Физическая охрана, пультовая охрана и мониторинг. Специализация — объекты критической инфраструктуры и промышленные предприятия.</div>
+        <div class="tags"><span class="tag">периметр</span><span class="tag">КИИ</span><span class="tag">промышленность</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Екатеринбург</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="📢 Реклама и полиграфия"><div class="seg-header"><span class="seg-title">📢 Реклама и полиграфия</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Первый Печатный Двор»</div>
+          <span class="revenue-badge rev-low">~400 млн</span>
+        </div>
+        <div class="company-type">Типография</div>
+        <div class="card-desc">Полиграфия для госструктур: бланки, документация, информационные материалы, плакаты. Работает с Министерствами и регионами.</div>
+        <div class="tags"><span class="tag">полиграфия</span><span class="tag">бланки</span><span class="tag">документация</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «НаружкаПро»</div>
+          <span class="revenue-badge rev-low">~250 млн</span>
+        </div>
+        <div class="company-type">Рекламное агентство</div>
+        <div class="card-desc">Наружная реклама, вывески, баннеры, навигационные системы для городских программ. Выигрывает тендеры на оформление городской среды.</div>
+        <div class="tags"><span class="tag">наружка</span><span class="tag">баннеры</span><span class="tag">навигация</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Санкт-Петербург</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «МедиаМикс»</div>
+          <span class="revenue-badge rev-low">~300 млн</span>
+        </div>
+        <div class="company-type">Агентство</div>
+        <div class="card-desc">PR-сопровождение, социальная реклама для органов власти, производство видео- и аудиоматериалов по государственным заказам.</div>
+        <div class="tags"><span class="tag">PR</span><span class="tag">социальная реклама</span><span class="tag">видео</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="🔬 Промышленность и оборудование"><div class="seg-header"><span class="seg-title">🔬 Промышленность и оборудование</span><span class="seg-count">3 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «НасосСпецМаш»</div>
+          <span class="revenue-badge rev-mid">~850 млн</span>
+        </div>
+        <div class="company-type">Производитель / Поставщик</div>
+        <div class="card-desc">Насосное и компрессорное оборудование для промышленных предприятий и ЖКХ. Поставщик ПАО «Газпром», ЖКХ-предприятий по 223-ФЗ.</div>
+        <div class="tags"><span class="tag">насосы</span><span class="tag">компрессоры</span><span class="tag">223-ФЗ</span><span class="tag">ЖКХ</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Тверь</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «МеталлТрейд-Урал»</div>
+          <span class="revenue-badge rev-high">~1.3 млрд</span>
+        </div>
+        <div class="company-type">Металлоторговля</div>
+        <div class="card-desc">Металлопрокат, трубы, метизы для промышленных и строительных тендеров. Работает с УВЗ, УГМК, госзаводами Урала.</div>
+        <div class="tags"><span class="tag">металлопрокат</span><span class="tag">трубы</span><span class="tag">метизы</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Екатеринбург</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «ХимРеагент»</div>
+          <span class="revenue-badge rev-low">~400 млн</span>
+        </div>
+        <div class="company-type">Поставщик</div>
+        <div class="card-desc">Промышленные химические реагенты, реактивы для лабораторий, реагенты водоподготовки. Поставщик РЖД, ПАО «РусГидро», ГУП ВКХ.</div>
+        <div class="tags"><span class="tag">химреагенты</span><span class="tag">лаборатории</span><span class="tag">РЖД</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div></div></div><div class="segment-block" data-seg="💊 Фармацевтика и лекарства"><div class="seg-header"><span class="seg-title">💊 Фармацевтика и лекарства</span><span class="seg-count">2 компании</span></div><div class="cards"><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Медбиофарм»</div>
+          <span class="revenue-badge rev-high">~1.1 млрд</span>
+        </div>
+        <div class="company-type">Дистрибьютор</div>
+        <div class="card-desc">Дистрибуция лекарственных препаратов для государственных аптек и ЛПУ. Крупный участник централизованных региональных закупок.</div>
+        <div class="tags"><span class="tag">лекарства</span><span class="tag">ЛПУ</span><span class="tag">дистрибьютор</span><span class="tag">44-ФЗ</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Москва</span>
+          <span class="inn">—</span>
+        </div></div><div class="card">
+        <div class="card-head">
+          <div class="company-name">ООО «Фармасинтез-Регион»</div>
+          <span class="revenue-badge rev-mid">~600 млн</span>
+        </div>
+        <div class="company-type">Производитель / Поставщик</div>
+        <div class="card-desc">Производство и поставки дженериков. Активный участник тендеров ОНЛП, 7 нозологий и региональных программ льготного лекарственного обеспечения.</div>
+        <div class="tags"><span class="tag">дженерики</span><span class="tag">7 нозологий</span><span class="tag">ОНЛП</span></div>
+        <div class="card-footer">
+          <span class="city">📍 Иркутск</span>
+          <span class="inn">—</span>
+        </div></div></div></div></div>
+<div class="no-results" id="noResults" style="display: none;">Ничего не найдено. Попробуйте другой запрос.</div>
+
+<script>
+const data = [
+  {
+    segment: "🏥 Медицинские изделия",
+    companies: [
+      { name: "ООО «Биосфера»", rev: "~1.4 млрд", revClass: "rev-high", type: "Производитель / Поставщик", desc: "Производство расходных медизделий: перчатки, маски, салфетки, пелёнки. Активный победитель тендеров больниц и ДСО по всей РФ.", tags: ["расходники","44-ФЗ","производство"], city: "Москва", inn: "7721614680" },
+      { name: "ООО «МедТрейдГрупп»", rev: "~600 млн", revClass: "rev-mid", type: "Дистрибьютор", desc: "Поставки медоборудования и расходных материалов в государственные и частные ЛПУ. Работает по 44-ФЗ и 223-ФЗ.", tags: ["мед.оборудование","223-ФЗ","регионы"], city: "Казань", inn: "" },
+      { name: "ООО «Медполимер»", rev: "~380 млн", revClass: "rev-low", type: "Производитель", desc: "Производство шприцев, катетеров, систем для инфузий. Занимает устойчивую нишу в государственных тендерах на расходники.", tags: ["расходники","производство","импортозамещение"], city: "Москва", inn: "" },
+    ]
+  },
+  {
+    segment: "🏗️ Строительные материалы",
+    companies: [
+      { name: "ООО «СтройМастер-ДВ»", rev: "~900 млн", revClass: "rev-mid", type: "Поставщик / Подрядчик", desc: "Поставки строительных материалов и выполнение СМР для госзаказчиков ДФО. Специализация — капремонт, дорожное строительство.", tags: ["СМР","44-ФЗ","стройматериалы"], city: "Хабаровск", inn: "" },
+      { name: "ООО «Промстройснаб»", rev: "~700 млн", revClass: "rev-mid", type: "Торговый дом", desc: "Оптовые поставки цемента, кирпича, арматуры, металлопроката для строительных тендеров ФСИН, МО, госкомпаний.", tags: ["цемент","арматура","223-ФЗ"], city: "Екатеринбург", inn: "" },
+      { name: "ООО «КровМонтаж»", rev: "~350 млн", revClass: "rev-low", type: "Производитель / Подрядчик", desc: "Кровельные и отделочные материалы, монтаж. Поставки для Минстроя, муниципальных заказчиков. Преимущество — субъект МСП.", tags: ["кровля","МСП","отделка"], city: "Новосибирск", inn: "" },
+    ]
+  },
+  {
+    segment: "🚗 Авто и запчасти",
+    companies: [
+      { name: "ООО «Автодеталь-Сервис»", rev: "~1.8 млрд", revClass: "rev-high", type: "Дистрибьютор", desc: "Официальный дистрибьютор запчастей АвтоВАЗ и иностранных производителей. Крупный поставщик по тендерам для госпарков, МВД, МО.", tags: ["запчасти","ВАЗ","госпарки","44-ФЗ"], city: "Тольятти", inn: "6321100070" },
+      { name: "ООО «АвтоТрейд-Ойл»", rev: "~500 млн", revClass: "rev-mid", type: "Поставщик", desc: "Поставки ГСМ, масел, топлива и автохимии по тендерам для муниципальных транспортных предприятий, автобусных парков.", tags: ["ГСМ","топливо","транспорт"], city: "Санкт-Петербург", inn: "" },
+      { name: "ООО «АвтоМашТехника»", rev: "~350 млн", revClass: "rev-low", type: "Поставщик / Сервис", desc: "Запчасти для грузовой и специализированной техники (КАМАЗ, МАЗ), ТО и ремонт. Поставщик ФСИН, Росгвардии, дорожных служб.", tags: ["КАМАЗ","спецтехника","ТО"], city: "Нижний Новгород", inn: "" },
+    ]
+  },
+  {
+    segment: "💻 IT и телекоммуникации",
+    companies: [
+      { name: "ООО «БАРС Груп»", rev: "~1.9 млрд", revClass: "rev-high", type: "Разработчик ПО", desc: "Разработка и внедрение информационных систем для госсектора: образование, здравоохранение, социальная защита. Крупный победитель гостендеров.", tags: ["ПО","госсектор","интеграция"], city: "Казань", inn: "1655056932" },
+      { name: "АО «НПО Эшелон»", rev: "~800 млн", revClass: "rev-mid", type: "Разработчик / Интегратор", desc: "Кибербезопасность, сертифицированные средства защиты информации для госорганов и КИИ. Аккредитован ФСБ, ФСТЭК.", tags: ["кибербезопасность","КИИ","ФСБ","ФСТЭК"], city: "Москва", inn: "7714783146" },
+      { name: "ООО «Группа Астра»", rev: "~1.2 млрд", revClass: "rev-high", type: "Разработчик ОС", desc: "Разработчик российской ОС Astra Linux. Активный победитель тендеров на импортозамещение ПО в органах власти и госкомпаниях.", tags: ["Astra Linux","импортозамещение","ОС"], city: "Москва", inn: "7731601509" },
+    ]
+  },
+  {
+    segment: "⚡ Энергетика и ЖКХ",
+    companies: [
+      { name: "ООО «ЭнергоТехКомплект»", rev: "~1.1 млрд", revClass: "rev-high", type: "Поставщик", desc: "Поставки кабельно-проводниковой продукции, трансформаторов, распределительных устройств для тендеров сетевых компаний.", tags: ["кабель","трансформаторы","РУ","223-ФЗ"], city: "Москва", inn: "" },
+      { name: "ООО «Свет-Сервис»", rev: "~450 млн", revClass: "rev-low", type: "Поставщик / Подрядчик", desc: "Поставка и монтаж светодиодных светильников уличного освещения. Устойчивая позиция в муниципальных тендерах на модернизацию освещения.", tags: ["LED","освещение","энергосервис"], city: "Санкт-Петербург", inn: "" },
+      { name: "ООО «АкваТехПром»", rev: "~600 млн", revClass: "rev-mid", type: "Поставщик / Подрядчик", desc: "Оборудование для водоподготовки, водоснабжения и водоотведения. Ключевой поставщик для ГУП ВКХ регионов ЦФО и ПФО.", tags: ["ВКХ","водоснабжение","ЖКХ"], city: "Ярославль", inn: "" },
+    ]
+  },
+  {
+    segment: "🍽️ Продукты питания",
+    companies: [
+      { name: "ООО «Ромкор»", rev: "~1.9 млрд", revClass: "rev-high", type: "Производитель", desc: "Мясоперерабатывающее предприятие, поставщик продуктов питания для школ, больниц, армии, ФСИН. Победитель крупных региональных тендеров.", tags: ["мясо","школы","44-ФЗ","ФСИН"], city: "Челябинск", inn: "7448070950" },
+      { name: "ООО «Хладопродукт»", rev: "~500 млн", revClass: "rev-mid", type: "Производитель / Поставщик", desc: "Замороженные и охлаждённые продукты для госпитального питания, детских учреждений, армейских столовых. Аккредитован МО РФ.", tags: ["замороженные продукты","армия","больницы"], city: "Краснодар", inn: "" },
+      { name: "ООО «Агропрод»", rev: "~350 млн", revClass: "rev-low", type: "Дистрибьютор", desc: "Комплексное продовольственное снабжение для государственных учреждений: крупы, консервы, масло, сахар. МСП-участник.", tags: ["продовольствие","МСП","комплект"], city: "Воронеж", inn: "" },
+    ]
+  },
+  {
+    segment: "🌿 Сельское хозяйство",
+    companies: [
+      { name: "ООО «АгроТехСнаб»", rev: "~750 млн", revClass: "rev-mid", type: "Дистрибьютор с/х техники", desc: "Поставки сельхозтехники и запчастей (тракторы, плуги, сеялки) для региональных АПК-программ и тендеров Минсельхоза.", tags: ["сельхозтехника","МСХ","запчасти"], city: "Краснодар", inn: "" },
+      { name: "ООО «Агрохимпромторг»", rev: "~500 млн", revClass: "rev-mid", type: "Поставщик", desc: "Удобрения, средства защиты растений, агрохимия. Поставки для госпрограмм субсидирования АПК, тендеры региональных министерств.", tags: ["удобрения","СЗСР","АПК"], city: "Москва", inn: "" },
+      { name: "ООО «ВетФарм»", rev: "~280 млн", revClass: "rev-low", type: "Дистрибьютор", desc: "Ветеринарные препараты и вакцины. Активный поставщик для региональных ветеринарных служб по 44-ФЗ и для с/х предприятий.", tags: ["ветпрепараты","вакцины","ветслужбы"], city: "Ростов-на-Дону", inn: "" },
+    ]
+  },
+  {
+    segment: "🎓 Образование",
+    companies: [
+      { name: "ООО «Просвещение-Регион»", rev: "~1.2 млрд", revClass: "rev-high", type: "Издательство / Поставщик", desc: "Поставки учебников, методических пособий и цифровых образовательных ресурсов для школ и вузов. Дочерняя структура ИГ «Просвещение».", tags: ["учебники","школы","ЦОР"], city: "Москва", inn: "" },
+      { name: "ООО «Лабораторные Технологии»", rev: "~400 млн", revClass: "rev-low", type: "Поставщик", desc: "Оснащение учебных лабораторий, физических и химических кабинетов. Выигрывает тендеры на оборудование по нацпроекту «Образование».", tags: ["лабоборудование","нацпроект","физика","химия"], city: "Казань", inn: "" },
+      { name: "ООО «ШколаПарк»", rev: "~250 млн", revClass: "rev-low", type: "Производитель", desc: "Производство школьной мебели и игровых площадок. Поставляет в новые школы и детские сады по программам Минпросвещения.", tags: ["мебель","детплощадки","МСП"], city: "Уфа", inn: "" },
+    ]
+  },
+  {
+    segment: "👔 Одежда, обувь и СИЗ",
+    companies: [
+      { name: "ООО «Восток-Сервис-Спецкомплект»", rev: "~1.7 млрд", revClass: "rev-high", type: "Производитель", desc: "Один из лидеров рынка СИЗ и спецодежды. Крупнейший тендерный поставщик для промышленных предприятий, силовых структур и МЧС.", tags: ["СИЗ","спецодежда","МЧС","силовые"], city: "Москва", inn: "7728543814" },
+      { name: "ООО «Техноавиа»", rev: "~600 млн", revClass: "rev-mid", type: "Производитель / Поставщик", desc: "Производство СИЗ, рабочей обуви, перчаток. Широкая сеть по РФ. Активно участвует в тендерах предприятий с госучастием.", tags: ["обувь","перчатки","СИЗ","223-ФЗ"], city: "Москва", inn: "7703057218" },
+      { name: "АО «Чайковский текстиль»", rev: "~400 млн", revClass: "rev-low", type: "Производитель", desc: "Производство тканей, постельного белья, спецтекстиля. Поставщик для больниц, армии, ФСИН. Работает с 1955 года.", tags: ["текстиль","постельное","армия","ФСИН"], city: "Чайковский", inn: "5920007960" },
+    ]
+  },
+  {
+    segment: "🏢 Офис и хозтовары",
+    companies: [
+      { name: "ООО «Офис Премиум»", rev: "~350 млн", revClass: "rev-low", type: "Дистрибьютор", desc: "Комплексные поставки канцтоваров, бумаги, картриджей и оргтехники для органов государственной власти и бюджетных учреждений.", tags: ["канцтовары","бумага","картриджи"], city: "Москва", inn: "" },
+      { name: "ООО «ХозСнаб Центр»", rev: "~280 млн", revClass: "rev-low", type: "Дистрибьютор", desc: "Хозяйственный инвентарь, моющие средства, инструменты. Поставки для ЖКХ-предприятий, школ, больниц. Активная работа в регионах.", tags: ["хозтовары","ЖКХ","расходники"], city: "Тверь", inn: "" },
+      { name: "ООО «Клинпром»", rev: "~220 млн", revClass: "rev-low", type: "Производитель", desc: "Производство профессиональной химии для клининга. Поставщик для госучреждений, аутсорсинга уборки. Сертифицировано по ГОСТ.", tags: ["клининг","химия","ГОСТ"], city: "Санкт-Петербург", inn: "" },
+    ]
+  },
+  {
+    segment: "🚛 Логистика и транспорт",
+    companies: [
+      { name: "ООО «Байкал-Сервис ТК»", rev: "~1.8 млрд", revClass: "rev-high", type: "Транспортная компания", desc: "Грузоперевозки по всей России. Работает с государственными заказчиками по 223-ФЗ, обеспечивает доставку по контрактам госкорпораций.", tags: ["грузоперевозки","223-ФЗ","федеральный"], city: "Москва", inn: "7710508619" },
+      { name: "ООО «Деловые Линии-Регион»", rev: "~700 млн", revClass: "rev-mid", type: "Транспортная компания", desc: "Региональный сегмент перевозок ДЛ. Поставки последней мили для госконтрактов, тендеры на доставку в отдалённые районы.", tags: ["доставка","регионы","последняя миля"], city: "Казань", inn: "" },
+      { name: "ООО «АвиаТрансГрупп»", rev: "~400 млн", revClass: "rev-low", type: "Авиаброкер / Перевозчик", desc: "Авиационные грузоперевозки и чартерные рейсы для госзаказчиков. Поставки в труднодоступные районы Арктики и Сибири.", tags: ["авиаперевозки","Арктика","чартер"], city: "Москва", inn: "" },
+    ]
+  },
+  {
+    segment: "🌳 Экология и благоустройство",
+    companies: [
+      { name: "ООО «ЭкоСити»", rev: "~900 млн", revClass: "rev-mid", type: "Региональный оператор ТКО", desc: "Региональный оператор по обращению с ТКО. Вывоз и утилизация твёрдых коммунальных отходов по концессионным соглашениям.", tags: ["ТКО","регоператор","утилизация"], city: "Самара", inn: "" },
+      { name: "ООО «ГринЛэнд»", rev: "~300 млн", revClass: "rev-low", type: "Подрядчик", desc: "Озеленение, благоустройство территорий, уход за зелёными насаждениями. Победитель муниципальных тендеров в ЦФО и ПФО.", tags: ["озеленение","благоустройство","МСП"], city: "Нижний Новгород", inn: "" },
+      { name: "ООО «ЭкоАналитика»", rev: "~230 млн", revClass: "rev-low", type: "Лаборатория", desc: "Экологический мониторинг, лабораторные исследования почвы и воды. Аккредитована Росаккредитацией, работает с промышленными госзаказчиками.", tags: ["мониторинг","лаборатория","почва","вода"], city: "Казань", inn: "" },
+    ]
+  },
+  {
+    segment: "🛡️ Безопасность",
+    companies: [
+      { name: "ООО ЧОО «Кобра»", rev: "~600 млн", revClass: "rev-mid", type: "ЧОО", desc: "Охранные услуги для госучреждений: школы, больницы, суды, органы власти. Крупный победитель тендеров в Москве и ЦФО по 44-ФЗ.", tags: ["охрана","44-ФЗ","ЧОО","госучреждения"], city: "Москва", inn: "" },
+      { name: "ООО «ТелевизионныеСистемыБезопасности»", rev: "~450 млн", revClass: "rev-low", type: "Интегратор систем безопасности", desc: "Монтаж и обслуживание систем видеонаблюдения, СКУД, тревожной сигнализации. Госконтракты по программе «Безопасный город».", tags: ["СКУД","видеонаблюдение","Безопасный город"], city: "Москва", inn: "" },
+      { name: "ООО «СтатусГрупп»", rev: "~280 млн", revClass: "rev-low", type: "ЧОО / Охрана периметра", desc: "Физическая охрана, пультовая охрана и мониторинг. Специализация — объекты критической инфраструктуры и промышленные предприятия.", tags: ["периметр","КИИ","промышленность"], city: "Екатеринбург", inn: "" },
+    ]
+  },
+  {
+    segment: "📢 Реклама и полиграфия",
+    companies: [
+      { name: "ООО «Первый Печатный Двор»", rev: "~400 млн", revClass: "rev-low", type: "Типография", desc: "Полиграфия для госструктур: бланки, документация, информационные материалы, плакаты. Работает с Министерствами и регионами.", tags: ["полиграфия","бланки","документация"], city: "Москва", inn: "" },
+      { name: "ООО «НаружкаПро»", rev: "~250 млн", revClass: "rev-low", type: "Рекламное агентство", desc: "Наружная реклама, вывески, баннеры, навигационные системы для городских программ. Выигрывает тендеры на оформление городской среды.", tags: ["наружка","баннеры","навигация"], city: "Санкт-Петербург", inn: "" },
+      { name: "ООО «МедиаМикс»", rev: "~300 млн", revClass: "rev-low", type: "Агентство", desc: "PR-сопровождение, социальная реклама для органов власти, производство видео- и аудиоматериалов по государственным заказам.", tags: ["PR","социальная реклама","видео"], city: "Москва", inn: "" },
+    ]
+  },
+  {
+    segment: "🔬 Промышленность и оборудование",
+    companies: [
+      { name: "ООО «НасосСпецМаш»", rev: "~850 млн", revClass: "rev-mid", type: "Производитель / Поставщик", desc: "Насосное и компрессорное оборудование для промышленных предприятий и ЖКХ. Поставщик ПАО «Газпром», ЖКХ-предприятий по 223-ФЗ.", tags: ["насосы","компрессоры","223-ФЗ","ЖКХ"], city: "Тверь", inn: "" },
+      { name: "ООО «МеталлТрейд-Урал»", rev: "~1.3 млрд", revClass: "rev-high", type: "Металлоторговля", desc: "Металлопрокат, трубы, метизы для промышленных и строительных тендеров. Работает с УВЗ, УГМК, госзаводами Урала.", tags: ["металлопрокат","трубы","метизы"], city: "Екатеринбург", inn: "" },
+      { name: "ООО «ХимРеагент»", rev: "~400 млн", revClass: "rev-low", type: "Поставщик", desc: "Промышленные химические реагенты, реактивы для лабораторий, реагенты водоподготовки. Поставщик РЖД, ПАО «РусГидро», ГУП ВКХ.", tags: ["химреагенты","лаборатории","РЖД"], city: "Москва", inn: "" },
+    ]
+  },
+  {
+    segment: "💊 Фармацевтика и лекарства",
+    companies: [
+      { name: "ООО «Медбиофарм»", rev: "~1.1 млрд", revClass: "rev-high", type: "Дистрибьютор", desc: "Дистрибуция лекарственных препаратов для государственных аптек и ЛПУ. Крупный участник централизованных региональных закупок.", tags: ["лекарства","ЛПУ","дистрибьютор","44-ФЗ"], city: "Москва", inn: "" },
+      { name: "ООО «Фармасинтез-Регион»", rev: "~600 млн", revClass: "rev-mid", type: "Производитель / Поставщик", desc: "Производство и поставки дженериков. Активный участник тендеров ОНЛП, 7 нозологий и региональных программ льготного лекарственного обеспечения.", tags: ["дженерики","7 нозологий","ОНЛП"], city: "Иркутск", inn: "" },
+    ]
+  },
+];
+
+function revSort(rev) {
+  const n = parseFloat(rev.replace(/[^0-9.]/g,''));
+  return n;
+}
+
+function buildSegmentFilters() {
+  const row = document.getElementById('filterRow');
+  const allBtn = document.createElement('button');
+  allBtn.className = 'filter-btn active';
+  allBtn.textContent = 'Все сегменты';
+  allBtn.dataset.seg = 'all';
+  allBtn.onclick = () => { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); allBtn.classList.add('active'); filterAll(); };
+  row.appendChild(allBtn);
+  data.forEach(seg => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.textContent = seg.segment;
+    btn.dataset.seg = seg.segment;
+    btn.onclick = () => { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); filterAll(); };
+    row.appendChild(btn);
+  });
+}
+
+function getActiveSeg() {
+  const active = document.querySelector('.filter-btn.active');
+  return active ? active.dataset.seg : 'all';
+}
+
+function filterAll() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const seg = getActiveSeg();
+  let total = 0;
+  document.querySelectorAll('.segment-block').forEach(block => {
+    const blockSeg = block.dataset.seg;
+    if (seg !== 'all' && blockSeg !== seg) { block.classList.add('hidden'); return; }
+    let anyVisible = false;
+    block.querySelectorAll('.card').forEach(card => {
+      const text = card.textContent.toLowerCase();
+      if (!q || text.includes(q)) { card.classList.remove('hidden'); anyVisible = true; total++; }
+      else card.classList.add('hidden');
+    });
+    block.classList.toggle('hidden', !anyVisible);
+  });
+  document.getElementById('totalCompanies').textContent = total;
+  document.getElementById('noResults').style.display = total === 0 ? 'block' : 'none';
+}
+
+function buildCatalog() {
+  const cat = document.getElementById('catalog');
+  data.forEach(seg => {
+    const block = document.createElement('div');
+    block.className = 'segment-block';
+    block.dataset.seg = seg.segment;
+    const header = document.createElement('div');
+    header.className = 'seg-header';
+    header.innerHTML = `<span class="seg-title">${seg.segment}</span><span class="seg-count">${seg.companies.length} компании</span>`;
+    block.appendChild(header);
+    const cards = document.createElement('div');
+    cards.className = 'cards';
+    seg.companies.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-head">
+          <div class="company-name">${c.name}</div>
+          <span class="revenue-badge ${c.revClass}">${c.rev}</span>
+        </div>
+        <div class="company-type">${c.type}</div>
+        <div class="card-desc">${c.desc}</div>
+        <div class="tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <div class="card-footer">
+          <span class="city">📍 ${c.city}</span>
+          ${c.inn ? `<span class="inn">ИНН ${c.inn}</span>` : '<span class="inn">—</span>'}
+        </div>`;
+      cards.appendChild(card);
+    });
+    block.appendChild(cards);
+    cat.appendChild(block);
+  });
+}
+
+buildCatalog();
+buildSegmentFilters();
+filterAll();
+</script>
+
+
+</body></html>
